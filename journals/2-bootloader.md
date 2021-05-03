@@ -1,0 +1,12 @@
+# Entry 2: The Bootloader
+Now that we have created our basic setup for our docker image, lets create a bootable image First thing we're gonna do is reorganize our file structure. The reason being is that Dockerfile needs to be in the highest possible level in order to copy our files. We will also create a folder called src (we might change this later), which will hold all of our files. Inside this file we are going to create a file called `boot.asm`. This file will act as our main entrypoint for our OS.
+
+Now let's start by creating our boot image. For now we just want to get qemu to recognize our boot image and boot from it. If that is the case, we will use some basic assembly to run this. In x86_64, we can use `$` to point to our current address in memory. We can also use `jmp` which performs a jump to either a label or address (they are the same thing in assembly). `jmp $` basically creates an infinite loop for running. Boom and now we're done! No wait we need to make sure our image is recognized by our system as bootable. 
+
+The way we do this is by assigning the first sector of our bootable media to have 2 bytes at the end of this sector. These are `0x55aa`. For now we will pad our sector out. At the bottom of our file we will add `db 0x55, 0xaa`. Above this line we will use `times` to pad out our sector. Our sector is 512 bytes, and we use 2 of them for our specific code at the end, leaving us with 510 bytes. However we have instructions at the top and we will add more. Remember that `$` represents the memory address we are currently looking at. We can also use `$$` to get the address of the beginning of the current sector. `$-$$` will tell us how many bytes we have already used before our `times` command. Thus we can use `times 510-($-$$), db 0` to pad our file with 0's until we get to the 510'th byte. 
+
+Finally (and I promise finally) we need to compile our image. Currently our docker image just installs all the tools we need, but now we need to add our files to the image and compile the image. We will just copy the whole src folder for now to our current directory, and then we are going to compile our image. We will add the `-f bin` argument for binary and `-o os.iso` to create an iso file for building. Finally we will add a `CMD` command to run QEMU. 
+```dockerfile
+CMD ["qemu-system-x86_64", "-curses", "-drive", "format=raw,file=os.iso"]
+```
+Once again we build and run, and we see that our emulator boots from hard disk! Our next step is to build some content that goes to on screen!
