@@ -1,3 +1,9 @@
+%include "print.asnm"
+
+mov bx, osname
+
+call printString
+
 jmp $
 
 times 510-($-$$) db 0

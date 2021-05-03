@@ -1,4 +1,4 @@
-# Entry 2: The Bootloader
+# Entry 2: The Bootloader [Commit](https://github.com/khalid-talakshi/DJ-OS/commit/623bf8be0c881b6770926c50e3658e772c9b2bcd)
 Now that we have created our basic setup for our docker image, lets create a bootable image First thing we're gonna do is reorganize our file structure. The reason being is that Dockerfile needs to be in the highest possible level in order to copy our files. We will also create a folder called src (we might change this later), which will hold all of our files. Inside this file we are going to create a file called `boot.asm`. This file will act as our main entrypoint for our OS.
 
 Now let's start by creating our boot image. For now we just want to get qemu to recognize our boot image and boot from it. If that is the case, we will use some basic assembly to run this. In x86_64, we can use `$` to point to our current address in memory. We can also use `jmp` which performs a jump to either a label or address (they are the same thing in assembly). `jmp $` basically creates an infinite loop for running. Boom and now we're done! No wait we need to make sure our image is recognized by our system as bootable. 
