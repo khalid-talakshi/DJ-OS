@@ -1,11 +1,11 @@
-# Entry 1: Toolchain Setup
+# Entry 1: Toolchain Setup [(Commit)](https://github.com/khalid-talakshi/DJ-OS/commit/e54a4d06a02da3311ac1a3ff41988ed31cdaeabe)
 In order to start building our OS, we need to setup some tools to make it possible. An OS needs to compile assembly and run it in some sort of emulator. For this OS we will be using the x86 architecture. Why? Mainly the number of docs and tutorials I'll be pulling from, but also because I have worked in one using MIPS and while it is awesome, it was built from the ground up. So now let's set up our environment.
 
 ## Our tools
-In order to build our OS, we will be using QEMU to run the OS and NASM to compile the assembly. However we are going to run this on a docker container, to not only learn how to use docker, but to use ubuntu for all of our stuff. We have created a folder called buildenv which will have our Dockerfile. Our base image will be ubuntu since I know how to work in it, and we will install nasm and qemu on this image. If you take a look at the Dockerfile you can see how we do this. 
+In order to build our OS, we will be using QEMU to run the OS and NASM to compile the assembly. However we are going to run this on a docker container, to not only learn how to use docker, but to use a premade image for all of our stuff. We have created a folder called buildenv which will have our Dockerfile. Our base image will be a gcc-cross-x86_64 since I know how to work in it (its debian based) and has a lot of the tools already set up for us, and we will install nasm and qemu on this image. If you take a look at the Dockerfile you can see how we do this. 
 ```dockerfile
 # base image
-FROM ubuntu
+FROM randomdude/gcc-cross-x86_64-elf:latest
 
 # working directory
 WORKDIR /project
